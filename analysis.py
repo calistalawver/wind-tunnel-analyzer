@@ -29,8 +29,16 @@ def compute_cl(alpha, cl0=0.10, lift_slope=0.11):
     float
         Lift coefficient.
     """
+
     return cl0 + lift_slope * alpha
 
+def alpha_residual(alpha, target_cl, cl0=0.10, lift_slope=0.11):
+    return compute_cl(alpha, cl0, lift_slope) - target_cl
+
+def solve_alpha(target_cl, cl0=0.10, lift_slope=0.11):
+    solution = fsolve(alpha_residual,x0=0.0,args=(target_cl, cl0, lift_slope))
+    return solution[0]
+    
 
 def print_lift_summary(alpha, cl0=0.10, lift_slope=0.11):
     """
@@ -56,12 +64,10 @@ def print_lift_summary(alpha, cl0=0.10, lift_slope=0.11):
 # TODO:
 # Add a numerical solver that computes angle of attack from a target
 # lift coefficient using scipy.optimize.fsolve.
-#
 # Planned residual form:
-#     f(alpha) = cl0 + lift_slope * alpha - target_cl
-#
-# Possible function names:
-#     alpha_residual(...)
-#     solve_alpha(...)
-#
+
+    #f(alpha) = cl0 + lift_slope * alpha - target_cl
+
+
 # This feature has not been implemented yet.
+#solve_alpha():
